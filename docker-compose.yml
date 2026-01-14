@@ -1,0 +1,9 @@
+services:
+  flatex-scraper:
+    build: .
+    container_name: flatex-scraper
+    shm_size: "1gb"
+    env_file:
+      - .env
+    volumes:
+      - ./out:/out

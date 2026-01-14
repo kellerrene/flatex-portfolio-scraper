@@ -1,0 +1,6 @@
+.env
+__pycache__/
+*.pyc
+out/*.json
+out/*.log
+.playwright/
