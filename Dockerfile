@@ -5,10 +5,11 @@ WORKDIR /app
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
-COPY flatex_scraper.py /app/flatex_scraper.py
+# neu: kompletten src-Ordner kopieren
+COPY src/ /app/src/
 
-# Default: headless. JSON optional nach /out/flatex.json
-ENV HEADLESS=true
-ENV OUTPUT_JSON_PATH=/out/flatex.json
+# optional: Output-Verzeichnis
+RUN mkdir -p /out
 
-CMD ["python", "/app/flatex_scraper.py"]
+# Wichtig: als Modul starten
+CMD ["python", "-m", "src.flatex_scraper"]
