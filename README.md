@@ -1,77 +1,77 @@
-# flatex-portfolio-tracker
+# Flatex Portfolio Tracker
 
-Dieses Projekt ist ein **Portfolio-Scraper für Flatex (Deutschland)**, der die Depotübersicht automatisiert ausliest und die Daten strukturiert für eine langfristige Weiterverarbeitung speichert.
+Dieses Projekt ist ein **Portfolio-Tracker für Flatex (Deutschland)**, der die Entwicklung einzelner Wertpapiere sowie des Gesamtportfolios über die Zeit erfasst und in **MySQL / MariaDB** und/oder **InfluxDB** speichert.
 
 ## Motivation
 
-Bei langfristigen Portfoliostrategien reicht eine Momentaufnahme nicht aus. Entscheidend sind:
+Bei langfristigen Portfoliostrategien reicht ein aktueller Depotstand nicht aus. Entscheidend sind:
+- der zeitliche **Wertverlauf einzelner Assets**,
+- die Entwicklung von **Assetklassen**,
+- sowie die **Gewichtung im Gesamtportfolio**.
 
-- der **Wertverlauf einzelner Assets**
-- die **Entwicklung von Assetklassen**
-- die **Gewichtung im Gesamtportfolio über die Zeit**
-
-Grundlage dafür sind **historische Bewegungsdaten** des Portfolios in einer maschinenlesbaren, weiterverarbeitbaren Form.  
-Genau hier setzt dieses Projekt an.
-
-## Ziel des Projekts
-
-Dieses Tool ermöglicht es privaten Anlegern und technisch interessierten Nutzern,
-
-- Portfoliodaten regelmäßig automatisiert abzurufen
-- diese **zeitgestempelt** zu speichern
-- und für eigene Auswertungen, Visualisierungen oder Rebalancing-Analysen zu nutzen
-
-Die Daten können wahlweise oder parallel abgelegt werden in:
-
-- **MySQL / MariaDB** (relationale Historisierung)
-- **InfluxDB 2.x** (Zeitreihenanalyse, ideal für Charts & Dashboards)
+Grundlage dafür sind **historische Bewegungsdaten** des Portfolios in einer weiterverarbeitbaren Form. Genau hier setzt dieses Projekt an.
 
 ## Funktionsumfang
 
-- automatischer Login bei Flatex (DE)
-- Auslesen aller Depotpositionen inkl.:
-  - ISIN, WKN
-  - Stückzahl
-  - aktueller Wert
-  - Einstandswerte
-- Speicherung mit **einem konsistenten Zeitstempel pro Abruf**
-- optionaler JSON-Export
-- lauffähig:
-  - unter **Windows**
-  - **headless unter Linux**
-  - vollständig **dockerisiert**
-- Beispiel für **Cron-Ausführung** enthalten (z. B. stündlich an Werktagen)
+- Automatisches Auslesen des Flatex-Depots (Web-Scraping mit Playwright)
+- Speicherung von:
+  - Portfolio-Snapshots (Gesamtwert, Einstandswert)
+  - Einzelpositionen (ISIN, Stückzahl, Preise, Werte)
+- Persistenz wahlweise in:
+  - MySQL / MariaDB
+  - InfluxDB (Zeitreihen)
+- Ausgabe der Rohdaten als JSON
+- Headless-Betrieb unter Linux
+- Lauffähig unter Windows
+- Docker-Setup inkl. Beispiel-Cronjob
 
-## Technik
+> **Hinweis:** Entwickelt und getestet für die **deutsche Flatex-Weboberfläche**.  
+> Ob die österreichische Variante kompatibel ist, muss geprüft werden.
 
-- Python
-- Playwright (Browser-Automation)
-- MySQL / MariaDB (optional)
-- InfluxDB 2.x (optional)
-- Docker & Docker Compose
+## Projektstruktur
 
-## Einsatzszenarien
+```
+.
+├─ src/                # Python-Quellcode
+├─ docker/             # Dockerfile & Compose
+├─ docs/               # Doku zu Docker, MySQL, InfluxDB
+├─ scripts/            # Startskripte (Windows / Linux)
+├─ .env.example        # Beispiel-Konfiguration
+├─ requirements.txt
+└─ README.md
+```
 
-- Langfristiges Performance-Tracking
-- Visualisierung des Portfolios (z. B. Grafana)
-- Analyse von Assetklassen-Gewichtungen
-- Basis für eigene Finanz- und Rebalancing-Tools
-- Home-Assistant- oder BI-Integration
+Im Verzeichnis `docs/` befindet sich zusätzliche Dokumentation zu:
+- Docker-Betrieb
+- MySQL / MariaDB Schema
+- InfluxDB Messkonzept und Beispiel-Queries
 
-## Einschränkungen
+## Schnellstart
 
-- Entwickelt und getestet **für die deutsche Flatex-Webseite**
-- Ob die österreichische Flatex-Seite kompatibel ist, muss geprüft werden
-- Änderungen an der Flatex-Oberfläche können Anpassungen erfordern
+### Windows
+1. `scripts/run.ps1` öffnen
+2. ENV-Variablen (Flatex, MySQL, Influx) anpassen
+3. Skript ausführen
 
-## Zielgruppe
+### Linux / Docker
+1. `.env.example` nach `.env` kopieren und anpassen
+2. `docker compose build`
+3. `docker compose run --rm flatex-scraper`
 
-Dieses Projekt richtet sich an:
+Ein Beispiel für einen stündlichen Cronjob (werktags) ist enthalten.
 
-- technisch affine Privatanleger
-- Entwickler mit Interesse an Finanzdaten
-- Nutzer, die ihr Portfolio **nicht nur beobachten, sondern verstehen** wollen
+## Hinweis zur Entstehung
+
+⚠️ **Wichtiger Transparenzhinweis**
+
+- Quellcode **und** Dokumentation sind zu **100 % KI-generiert**
+- Es wurden KI-Engineering-Prozesse und -Tools von **Explicatis** angewendet
+- Der Autor besitzt **keine Entwicklungskompetenz in Python**
+- Umsetzung inkl. Qualitätssicherung, Tests und Dokumentation:
+  **ca. 3 Stunden von Idee bis GitHub-Release**
+
+Das Projekt dient als **praxisnahes Beispiel**, wie KI-gestützte Softwareentwicklung auch für Nicht-Python-Entwickler funktionieren kann.
 
 ## Lizenz
 
-MIT License – freie Nutzung, Anpassung und Weiterverwendung.
+MIT License – Nutzung, Anpassung und Weiterverwendung ausdrücklich erlaubt.
